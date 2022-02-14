@@ -10,9 +10,10 @@ This script will scan https://github.com/helium/denylist/issues for issues conta
 - ```python3 ./check_denylist.py```
 
 ### Running faster
-  This script can run faster with larger lists by using a github token which can be obtained here: https://github.com/settings/tokens
+ - This script can run faster with larger lists by using a github token which can be obtained here: https://github.com/settings/tokens
+ - Only repo.public_repo permission is required.
  - ```GITHUB_TOKEN="my token" python3 ./check_denylist.py```
 
 ### Running with Docker
-  You can also run this script using [Docker](https://www.docker.com/) so that you don't have to install any dependencies
-  Use the runme.sh script to build and execute the docker container.
+ - You can also run this script using [Docker](https://www.docker.com/) so that you don't have to install any dependencies
+ - Use the runme.sh script to build and execute the docker container.
