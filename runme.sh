@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-HOTSPOTS="$(pwd)/hotspots.txt"
+HOTSPOTS=${HOTSPOTS:-"$(pwd)/hotspots.txt"}
+
 
 docker build -t denylist_checker .
 
