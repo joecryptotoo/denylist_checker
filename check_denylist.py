@@ -20,12 +20,12 @@ deny_list = [hotspot[0] for hotspot in cr]
 
 print("Loading hotspots")
 with open(HOTSPOTS_TXT) as file:
-    hotspots = [line.rstrip() for line in file if not line.isspace()]
+    hotspots = [line.rstrip() for line in file if not (line.isspace() or line.startswith('#'))]
 
 for addr in hotspots:
     print("Checking " + addr)
     if (addr in deny_list): print ("Found {addr} in published denylist {url}".format(addr = addr, url=DENYLIST_URL))
-    issues = g.search_issues("repo:helium/denylist " + addr)
+    issues = g.search_issues("is:open repo:helium/denylist " + addr)
     for issue in issues:
         print("Found {addr} in {url}".format(addr = addr, url=issue.html_url))
     if addr != hotspots[-1]: time.sleep(sleep_time)
