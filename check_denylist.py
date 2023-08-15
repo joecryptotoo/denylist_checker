@@ -32,3 +32,12 @@ for branch in branches:
         if (addr in deny_list):
             print("Found {addr} in published denylist {url} in branch {branch}".format(addr=addr, url=DENYLIST_URL, branch=branch.name))
     if addr != hotspots[-1]: time.sleep(sleep_time)
+
+#Check issues
+for addr in hotspots:
+    print("Checking " + addr)
+    if (addr in deny_list): print ("Found {addr} in published denylist {url}".format(addr = addr, url=DENYLIST_URL))
+    issues = g.search_issues("repo:helium/denylist " + addr)
+    for issue in issues:
+        print("Found {addr} in {url}".format(addr = addr, url=issue.html_url))
+    if addr != hotspots[-1]: time.sleep(sleep_time)
