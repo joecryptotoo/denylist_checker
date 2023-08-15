@@ -9,19 +9,30 @@ g = Github(GITHUB_TOKEN)
 sleep_time = 2 if GITHUB_TOKEN else 6
 
 HOTSPOTS_TXT=os.getenv('HOTSPOTS', "hotspots.txt")
-DENYLIST_URL='https://raw.githubusercontent.com/helium/denylist/main/denylist.csv'
-
-print("Getting denylist")
-
-res = requests.get(DENYLIST_URL)
-decoded_content = res.content.decode('utf-8')
-cr = csv.reader(decoded_content.splitlines(), delimiter=',')
-deny_list = [hotspot[0] for hotspot in cr]
 
 print("Loading hotspots")
 with open(HOTSPOTS_TXT) as file:
     hotspots = [line.rstrip() for line in file if not line.isspace()]
 
+repo = g.get_repo("helium/denylist")
+branches = repo.get_branches()
+
+#Check all branches
+for branch in branches:
+    DENYLIST_URL='https://raw.githubusercontent.com/helium/denylist/' + branch.name + '/denylist.csv'
+    print("Getting denylist from branch " + branch.name)
+
+    res = requests.get(DENYLIST_URL)
+    decoded_content = res.content.decode('utf-8')
+    cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+    deny_list = [hotspot[0] for hotspot in cr]
+
+    for addr in hotspots:
+        print("Checking " + addr)
+        if (addr in deny_list):
+            print("Found {addr} in published denylist {url} in branch {branch}".format(addr=addr, url=DENYLIST_URL, branch=branch.name))
+
+#Check issues
 for addr in hotspots:
     print("Checking " + addr)
     if (addr in deny_list): print ("Found {addr} in published denylist {url}".format(addr = addr, url=DENYLIST_URL))
